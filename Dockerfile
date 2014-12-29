@@ -25,15 +25,21 @@ RUN apt-get install -y -q \
   xfonts-scalable \
   xfonts-cyrillic
 
+RUN npm install -g \
+  selenium-standalone@2.44.0-1 \
+  phantomjs@1.9.13 \
+  nightwatch@0.5.35
+
 RUN groupadd -g 1000 selenium
 RUN useradd -d /home/selenium -u 1000 -g 1000 -m selenium
 RUN mkdir -p /home/selenium/chrome
 RUN chown -R selenium:selenium /home/selenium
 
+RUN groupadd -g 1001 tests
+RUN useradd -d /home/tests -u 1001 -g 1001 -m tests
+ADD ./config/nightwatch/ /home/tests
+
 ADD ./bin/ /home/root/bin
-RUN npm install -g \
-  selenium-standalone@2.44.0-1 \
-  phantomjs@1.9.13
 
 EXPOSE 4444 5555
 ENTRYPOINT ["sh", "/home/root/bin/start.sh"]
