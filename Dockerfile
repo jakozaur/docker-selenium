@@ -30,6 +30,12 @@ RUN npm install -g \
   phantomjs@1.9.13 \
   nightwatch@0.5.35
 
+# Disable the SUID sandbox so that chrome can launch without being in a privileged container
+# From: https://github.com/danielfrg/docker-selenium (MIT license)
+RUN dpkg-divert --add --rename --divert /opt/google/chrome/google-chrome.real /opt/google/chrome/google-chrome
+RUN echo "#!/bin/bash\nexec /opt/google/chrome/google-chrome.real --disable-setuid-sandbox \"\$@\"" > /opt/google/chrome/google-chrome
+RUN chmod 755 /opt/google/chrome/google-chrome
+
 RUN groupadd -g 1000 selenium
 RUN useradd -d /home/selenium -u 1000 -g 1000 -m selenium
 RUN mkdir -p /home/selenium/chrome
