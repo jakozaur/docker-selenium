@@ -24,7 +24,8 @@ RUN apt-get install -y -q \
   xfonts-75dpi \
   xfonts-scalable \
   xfonts-cyrillic \
-  xdotool
+  xdotool \
+  psmisc
 
 RUN npm install -g \
   selenium-standalone@2.44.0-1 \
